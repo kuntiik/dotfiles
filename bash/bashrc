@@ -7,6 +7,26 @@ case $- in
       *) return;;
 esac
 
+mydir() {
+    if  [ "$#" != 1 ] ; then
+        echo "expection one argument"
+    else
+        mkdir $1
+        cd $1
+        touch CMakeLists.txt
+        mkdir build;
+    fi
+}
+
+brightness(){
+    if [ "$#" != 1 ] ; then
+        echo "expecting one argument - brightnes from 0 to 1"
+    else
+        xrandr --output HDMI-1 --brightness $1
+        xrandr --output VGA-1 --brightness $1
+    fi
+}
+
 # don't put duplicate lines or lines starting with space in the history.
 HISTCONTROL=ignoreboth
 # append to the history file, don't overwrite it
@@ -46,5 +66,7 @@ if ! shopt -oq posix; then
   fi
 fi
 
-source /opt/ros/melodic/setup.bash
+/usr/bin/setxkbmap -option "caps:swapescape"
 source ~/catkin_ws/devel/setup.bash
+source /opt/ros/melodic/setup.bash
+#export PYTHONPATH=/usr/lib/python2.7/dist-packages/ranger

@@ -3,9 +3,26 @@ alias bh='nvim ~/dotfiles/bash/bashrc'
 alias ba='nvim ~/dotfiles/bash/bash_aliases'
 alias bs='source ~/.bashrc;echo "sourced bashrc"'
 
+alias rs='source ~/catkin_ws/devel/setup.bash'
+alias rl='rostopic list'
+alias re='rostopic echo'
+alias cm='cd ~/catkin_ws;catkin_make;source devel/setup.bash; echo "sourced ros"'
+alias rsbp='rosbag play ~/tower_data/3_2020_05_27_17_51_58_sloupdataset1/_2020-05-27-17-52-07.bag -s 25'
+
+#alias fint='~/.my_scripts/setup_directory.sh'
+
+
 alias tc='nvim ~/.tmux.conf'
 alias ts='tmux source-file ~/.tmux.conf'
 alias tk='tmux kill-server'
+
+alias vc='nvim ~/dotfiles/nvim/init.vim'
+
+#alias ic='nvim ~/dotfiles/i3/config'
+alias ic='nvim ~/.config/i3/config'
+
+alias sc='/usr/bin/setxkbmap -option "caps:swapescape"'
+
 
 # some more ls aliases
 alias ll='ls -alF'
