@@ -19,6 +19,12 @@ hyper - 1: yabai -m window --display 1; yabai -m display --focus 1
 hyper - 2: yabai -m window --display 2; yabai -m display --focus 2
 hyper - 3: yabai -m window --display 3; yabai -m display --focus 3
 
+alt - q: yabai -m space --focus 0
+alt - w: yabai -m space --focus 1
+alt - e: yabai -m space --focus 2
+alt - r: yabai -m space --focus 3
+alt - t: yabai -m space --focus 4
+
 alt - 0:yabai -m display --focus 0
 alt - 1:yabai -m display --focus 1
 alt - 2:yabai -m display --focus 2
@@ -26,9 +32,12 @@ alt - 3:yabai -m display --focus 3
 alt - 4:yabai -m display --focus 4
 
 
+alt - n: yabai -m space --create
+alt - x: yabai -m space --destroy
+
 #increase size
-alt - q : yabai -m window --resize left:-20:0
-alt - w : yabai -m window --resize top:0:-20
+#alt - q : yabai -m window --resize left:-20:0
+#alt - w : yabai -m window --resize top:0:-20
 
 # decrease size
 alt - a : yabai -m window --resize bottom:0:-20
