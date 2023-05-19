@@ -9,31 +9,47 @@ alt+shift -k: yabai -m window --swap north
 alt+shift -h: yabai -m window --swap west
 alt+shift -l: yabai -m window --swap east
 
-# Changing display focus
-hyper -j : yabai -m display --focus south
-hyper -k : yabai -m display --focus north
-hyper -h : yabai -m display --focus west
-hyper -l : yabai -m display --focus east
+### Display navigation
 
+# Move the focused app to a display and swithch focus
 hyper - 1: yabai -m window --display 1; yabai -m display --focus 1
 hyper - 2: yabai -m window --display 2; yabai -m display --focus 2
 hyper - 3: yabai -m window --display 3; yabai -m display --focus 3
 
-alt - q: yabai -m space --focus 0
-alt - w: yabai -m space --focus 1
-alt - e: yabai -m space --focus 2
-alt - r: yabai -m space --focus 3
-alt - t: yabai -m space --focus 4
-
+# Move the focus to a display
 alt - 0:yabai -m display --focus 0
 alt - 1:yabai -m display --focus 1
 alt - 2:yabai -m display --focus 2
 alt - 3:yabai -m display --focus 3
 alt - 4:yabai -m display --focus 4
 
+### Window navigation
 
-alt - n: yabai -m space --create
-alt - x: yabai -m space --destroy
+# Focus winodow X
+alt - q: index=1; eval "$(yabai -m query --spaces | jq --argjson index "${index}" -r '(.[] | select(.index == $index).windows[0]) as $wid | if $wid then "yabai -m window --focus \"" + ($wid | tostring) + "\"" else "skhd --key \"ctrl - " + (map(select(."is-native-fullscreen" == 0)) | index(map(select(.index == $index))) + 1 % 10 | tostring) + "\"" end')"
+alt - w: index=2; eval "$(yabai -m query --spaces | jq --argjson index "${index}" -r '(.[] | select(.index == $index).windows[0]) as $wid | if $wid then "yabai -m window --focus \"" + ($wid | tostring) + "\"" else "skhd --key \"ctrl - " + (map(select(."is-native-fullscreen" == 0)) | index(map(select(.index == $index))) + 1 % 10 | tostring) + "\"" end')"
+alt - e: index=3; eval "$(yabai -m query --spaces | jq --argjson index "${index}" -r '(.[] | select(.index == $index).windows[0]) as $wid | if $wid then "yabai -m window --focus \"" + ($wid | tostring) + "\"" else "skhd --key \"ctrl - " + (map(select(."is-native-fullscreen" == 0)) | index(map(select(.index == $index))) + 1 % 10 | tostring) + "\"" end')"
+alt - r: index=4; eval "$(yabai -m query --spaces | jq --argjson index "${index}" -r '(.[] | select(.index == $index).windows[0]) as $wid | if $wid then "yabai -m window --focus \"" + ($wid | tostring) + "\"" else "skhd --key \"ctrl - " + (map(select(."is-native-fullscreen" == 0)) | index(map(select(.index == $index))) + 1 % 10 | tostring) + "\"" end')"
+alt - t: index=5; eval "$(yabai -m query --spaces | jq --argjson index "${index}" -r '(.[] | select(.index == $index).windows[0]) as $wid | if $wid then "yabai -m window --focus \"" + ($wid | tostring) + "\"" else "skhd --key \"ctrl - " + (map(select(."is-native-fullscreen" == 0)) | index(map(select(.index == $index))) + 1 % 10 | tostring) + "\"" end')"
+alt - y: index=6; eval "$(yabai -m query --spaces | jq --argjson index "${index}" -r '(.[] | select(.index == $index).windows[0]) as $wid | if $wid then "yabai -m window --focus \"" + ($wid | tostring) + "\"" else "skhd --key \"ctrl - " + (map(select(."is-native-fullscreen" == 0)) | index(map(select(.index == $index))) + 1 % 10 | tostring) + "\"" end')"
+alt - u: index=7; eval "$(yabai -m query --spaces | jq --argjson index "${index}" -r '(.[] | select(.index == $index).windows[0]) as $wid | if $wid then "yabai -m window --focus \"" + ($wid | tostring) + "\"" else "skhd --key \"ctrl - " + (map(select(."is-native-fullscreen" == 0)) | index(map(select(.index == $index))) + 1 % 10 | tostring) + "\"" end')"
+alt - i: index=8; eval "$(yabai -m query --spaces | jq --argjson index "${index}" -r '(.[] | select(.index == $index).windows[0]) as $wid | if $wid then "yabai -m window --focus \"" + ($wid | tostring) + "\"" else "skhd --key \"ctrl - " + (map(select(."is-native-fullscreen" == 0)) | index(map(select(.index == $index))) + 1 % 10 | tostring) + "\"" end')"
+alt - o: index=9; eval "$(yabai -m query --spaces | jq --argjson index "${index}" -r '(.[] | select(.index == $index).windows[0]) as $wid | if $wid then "yabai -m window --focus \"" + ($wid | tostring) + "\"" else "skhd --key \"ctrl - " + (map(select(."is-native-fullscreen" == 0)) | index(map(select(.index == $index))) + 1 % 10 | tostring) + "\"" end')"
+alt - p: index=0; eval "$(yabai -m query --spaces | jq --argjson index "${index}" -r '(.[] | select(.index == $index).windows[0]) as $wid | if $wid then "yabai -m window --focus \"" + ($wid | tostring) + "\"" else "skhd --key \"ctrl - " + (map(select(."is-native-fullscreen" == 0)) | index(map(select(.index == $index))) + 1 % 10 | tostring) + "\"" end')"
+
+
+# Move focused app to a window 
+hyper - q:wid="$(yabai -m query --windows | jq -r '(.[] | select(.["has-focus"] == true).id) | tostring ')"; yabai -m window --space 1; yabai -m window --focus $wid
+hyper - w:wid="$(yabai -m query --windows | jq -r '(.[] | select(.["has-focus"] == true).id) | tostring ')"; yabai -m window --space 2; yabai -m window --focus $wid
+hyper - e:wid="$(yabai -m query --windows | jq -r '(.[] | select(.["has-focus"] == true).id) | tostring ')"; yabai -m window --space 3; yabai -m window --focus $wid
+hyper - r:wid="$(yabai -m query --windows | jq -r '(.[] | select(.["has-focus"] == true).id) | tostring ')"; yabai -m window --space 4; yabai -m window --focus $wid
+hyper - t:wid="$(yabai -m query --windows | jq -r '(.[] | select(.["has-focus"] == true).id) | tostring ')"; yabai -m window --space 5; yabai -m window --focus $wid
+hyper - y:wid="$(yabai -m query --windows | jq -r '(.[] | select(.["has-focus"] == true).id) | tostring ')"; yabai -m window --space 6; yabai -m window --focus $wid
+hyper - u:wid="$(yabai -m query --windows | jq -r '(.[] | select(.["has-focus"] == true).id) | tostring ')"; yabai -m window --space 7; yabai -m window --focus $wid
+hyper - i:wid="$(yabai -m query --windows | jq -r '(.[] | select(.["has-focus"] == true).id) | tostring ')"; yabai -m window --space 8; yabai -m window --focus $wid
+hyper - o:wid="$(yabai -m query --windows | jq -r '(.[] | select(.["has-focus"] == true).id) | tostring ')"; yabai -m window --space 9; yabai -m window --focus $wid
+hyper - p:wid="$(yabai -m query --windows | jq -r '(.[] | select(.["has-focus"] == true).id) | tostring ')"; yabai -m window --space 0; yabai -m window --focus $wid
+
 
 #increase size
 #alt - q : yabai -m window --resize left:-20:0
@@ -45,8 +61,8 @@ alt - s : yabai -m window --resize top:0:20
 
 
 
-hyper - r: yabai -m space --rotate 90
+hyper - c: yabai -m space --rotate 90
 hyper - z: launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai"
-hyper - return: /Applications/iTerm.app/Contents/MacOS/iTerm2
+hyper - return: /opt/homebrew/bin/kitty
 alt -f: yabai -m window --toggle zoom-fullscreen
 alt - d : yabai -m window --toggle float --grid 4:4:1:1:2:2

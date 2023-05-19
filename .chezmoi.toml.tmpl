@@ -1,0 +1,21 @@
+
+{{/* boolean feature tags */}}
+{{- $personal := true -}}{{/* true if this is my personal machine (not for work)*/}}
+
+{{- $hostname := .chezmoi.hostname -}}
+
+{{- if eq $hostname "czsfpgspria2a13" -}}
+{{-		$personal = false -}}
+{{- else if eq $hostname "foo" -}} 
+{{-		$personal = true -}}
+{{- end -}}
+
+
+{{- $email := "kunt.lukas@gmail.com" -}}
+{{- if $personal -}}
+{{-		$email = "kuntl@merck.com" -}}
+{{- end -}}
+
+[data]
+    email = {{ $email | quote }}
+    personal = {{ $personal }}
