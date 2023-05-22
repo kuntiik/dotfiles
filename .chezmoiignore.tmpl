@@ -1,6 +1,11 @@
-
 {{ if ne .chezmoi.os "darwin" }}
 .config/karabiner
 .config/yabai
 .config/skhd
+{{ end }}
+
+
+
+{{ if ne .chezmoi.os "linux" }}
+.chezmoiscripts/linux
 {{ end }}
