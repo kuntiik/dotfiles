@@ -8,7 +8,14 @@ editor nvim
 
 allow_remote_control yes
 
+{{- if eq .chezmoi.os "darwin" }}
 listen_on unix:$TMPDIR/kitty
+{{- end }}
+
+{{- if eq .chezmoi.os "linux" }}
+listen_on unix:@mykitty
+{{- end }}
+
 
 #: Listen to the specified UNIX socket for remote control connections.
 #: Note that this will apply to all kitty instances. It can be
