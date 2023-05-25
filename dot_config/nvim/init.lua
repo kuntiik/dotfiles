@@ -1,24 +1,7 @@
---[[
-
-=====================================================================
-==================== READ THIS BEFORE CONTINUING ====================
-=====================================================================
---]]
-
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 vim.api.nvim_create_augroup("buffer", {clear= true})
-vim.api.nvim_create_autocmd({"BufNewFile", "BufReadPre", "BufRead"}, {
-   callback = function()
-     print(vim.fn.expand("%"))
-     vim.g.mychezmoi = 1
-   end,
-   pattern=vim.fn.expand("~") .. "/.local/share/chezmoi/*",
-   group = "buffer",
-   desc = "mydebug",
-})
-
 
 
 -- Install package manager
@@ -501,7 +484,6 @@ vim.api.nvim_create_autocmd("BufWritePost", {
    end,
    --]]
    callback = function()
-      print("Helloooo")
       vim.fn.jobstart('nohup chezmoi apply &')
 --      os.execute('chezmoi apply')
    end,
