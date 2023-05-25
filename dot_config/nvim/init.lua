@@ -9,6 +9,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 vim.api.nvim_create_augroup("buffer", {clear= true})
+--[[
 vim.api.nvim_create_autocmd({"BufNewFile", "BufReadPre", "BufRead"}, {
    callback = function()
      print(vim.fn.expand("%"))
@@ -18,6 +19,7 @@ vim.api.nvim_create_autocmd({"BufNewFile", "BufReadPre", "BufRead"}, {
    group = "buffer",
    desc = "mydebug",
 })
+--]]
 
 
 
@@ -501,7 +503,7 @@ vim.api.nvim_create_autocmd("BufWritePost", {
    end,
    --]]
    callback = function()
-      print("Helloooo")
+     -- print("Helloooo")
       vim.fn.jobstart('nohup chezmoi apply &')
 --      os.execute('chezmoi apply')
    end,
