@@ -1,0 +1,35 @@
+nnoremap <space> <Nop>
+map <space> <leader>
+
+nnoremap <leader>ev :e ~/.ideavimrc<CR>
+nnoremap <leader>sv :source ~/.ideavimrc<CR>
+
+nmap <leader>/ <action>(ShowErrorDescription)
+nmap ga <action>(GotoAction)
+nmap gf <action>(GotoFile)
+
+map f <Action>(AceAction)
+map F <Action>(AceTargetAction)
+# TODO change this
+map T <Action>(AceLineAction)
+
+set number relative_number
+
+set NERDTree
+nmap <leader>t :NERDTreeToggle<CR>
+let g:NERDTreeMapActivateNode='l'
+let g:NERDTreeMapJumpParent='h'
+
+nnoremap <leader>h <C-w>h
+nnoremap <leader>l <C-w>l
+nnoremap <leader>j <C-w>j
+nnoremap <leader>k <C-w>k
+
+nnoremap <c-\> :action SplitVertically<CR>
+nnoremap <c--> :action SplitHorizontally<CR>
+nnoremap <c-=> :action Unsplit<CR>
+nnoremap <c-m> :action MoveEditorToOppositeTabGroup<CR>
+
+nnoremap <leader>' :action Refactorings.QuickListPopupAction<CR>
+nnoremap <leader>= :action ReformatCode<CR>
+nnoremap <leader>o :action OptimizeImports<CR>
