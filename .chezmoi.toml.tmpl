@@ -1,6 +1,7 @@
 
 {{/* boolean feature tags */}}
 {{- $personal := true -}}{{/* true if this is my personal machine (not for work)*/}}
+{{- $ephemeral := false -}}
 
 {{- $hostname := .chezmoi.hostname -}}
 
@@ -8,6 +9,9 @@
 {{-		$personal = false -}}
 {{- else if eq $hostname "foo" -}} 
 {{-		$personal = true -}}
+{{- else -}}
+{{-	$ephemeral = true -}}
+{{- end -}}
 {{- end -}}
 
 
@@ -19,3 +23,4 @@
 [data]
     email = {{ $email | quote }}
     personal = {{ $personal }}
+    ephemeral = {{ $ephemeral }}
