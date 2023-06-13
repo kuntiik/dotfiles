@@ -1,0 +1,31 @@
+{{ if eq .osid "linux-debian" "linux-ubuntu" "linux-pop" -}}
+
+{{ $packages := list
+	"curl"
+	"zsh" -}}
+
+{{ $classicSnaps := list -}}
+
+{{ $classicSnaps = mustAppend $classicSnaps "code" -}}
+
+{{ $sudo := "sudo " -}}
+{{ if eq .chezmoi.username "root" -}}
+{{ $sudo = "" -}}
+{{ end -}}
+
+
+#!/bin/bash
+
+set -eufo pipefail
+
+{{ $sudo }}apt-get update
+{{ $sudo }}apt-get install -y {{ $packages | join " " }}
+
+{{ if lookPath "snap" }}
+{{   range $classicSnaps }}
+{{ $sudo }} snap install --classic {{ . }}
+{{   end }}
+{{ end }}
+
+{{ end -}}
+

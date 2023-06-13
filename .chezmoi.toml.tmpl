@@ -15,6 +15,18 @@
 {{- end -}}
 
 
+{{- $osID := .chezmoi.os -}}
+{{- if (and (eq .chezmoi.os "linux") (hasKey .chezmoi.osRelease "id")) -}}
+{{- $osID = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
+{{- end -}}
+
+{{- $osID := .chezmoi.os -}}
+{{- if (and (eq .chezmoi.os "linux") (hasKey .chezmoi.osRelease "id")) -}}
+{{- $osID = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
+{{- end -}}
+
+
+
 {{- $email := "kunt.lukas@gmail.com" -}}
 {{- if $personal -}}
 {{-		$email = "kuntl@merck.com" -}}
@@ -23,4 +35,5 @@
 [data]
     email = {{ $email | quote }}
     personal = {{ $personal }}
+    osid = {{ $osID | quote }}
     ephemeral = {{ $ephemeral }}
