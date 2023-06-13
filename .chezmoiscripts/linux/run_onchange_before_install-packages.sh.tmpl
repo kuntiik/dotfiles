@@ -1,3 +1,4 @@
+{{ if not .ephemeral}}
 {{ if eq .osid "linux-debian" "linux-ubuntu" "linux-pop" -}}
 
 {{ $packages := list
@@ -28,4 +29,4 @@ set -eufo pipefail
 {{ end }}
 
 {{ end -}}
-
+{{ end -}}
