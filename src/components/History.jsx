@@ -1,11 +1,11 @@
 import React from "react"
 import HistoryElement from "./HistoryElement";
 
-const History = ({historyContent}) => {
+const History = ({historyContent, historyOnClickFunction}) => {
     return (
         <div>
             <h3>History</h3>
-            <HistoryElement id={1} name="foo"/>
+            <HistoryElement id={1} name="foo" onClickFunction={historyOnClickFunction}/>
         </div>
     )
 }

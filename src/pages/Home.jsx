@@ -16,9 +16,9 @@ const Home = () => {
 
   const chatLogRef = useRef(null);
 
-  const setChatContent = () => {
-    setShowMenu(false)
+  const setChatContent = (id) => {
     console.log(showMenu)
+    setChatLog([{chatPrompt: "Dummy message"}, {chatPrompt: "foo", botMessage: "Dummy response"}])
   }
 
   useEffect(() => {
@@ -112,6 +112,7 @@ const Home = () => {
               chatLog={chatLog}
               setChatLog={setChatLog}
               setShowMenu={setShowMenu}
+              historyOnClickFunction={setChatContent}
             />
           </div>
           <div className="navCloseIcon">

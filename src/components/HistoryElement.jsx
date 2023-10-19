@@ -2,15 +2,16 @@ import React from "react";
 
 
 
-const HistoryElement = ({id, name}) => {
+const HistoryElement = ({id, name, onClickFunction}) => {
     function logIdAndName() {
         // Log the id and name to the console
         console.log("Button ID: " + id);
         console.log("Button Name: " + name);
+        onClickFunction(id);
     }
 
     return (
-        <button id={id} name={name} onClick={() => {console.log(id)}} >{name}</button>
+        <button id={id} name={name} onClick={logIdAndName} >{name}</button>
     )
 }
 

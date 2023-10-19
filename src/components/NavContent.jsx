@@ -5,7 +5,7 @@ import NewChat from "./NewChat";
 import Settings from "./Settings"
 import History from "./History";
 
-const NavContent = ({ chatLog, setChatLog, setShowMenu }) => {
+const NavContent = ({ chatLog, setChatLog, setShowMenu, historyOnClickFunction }) => {
   return (
     <>
       <NewChat setChatLog={setChatLog} setShowMenu={setShowMenu} />
@@ -18,7 +18,7 @@ const NavContent = ({ chatLog, setChatLog, setShowMenu }) => {
         )}
       </div>
       <NavLinksContainer chatLog={chatLog} setChatLog={setChatLog} />
-      <History/>
+      <History historyOnClickFunction={historyOnClickFunction}/>
       <Settings/>
     </>
   );
