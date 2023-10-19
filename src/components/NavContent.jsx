@@ -2,6 +2,8 @@ import React from "react";
 import NavLinksContainer from "./NavLinksContainer";
 import NavPrompt from "./NavPrompt";
 import NewChat from "./NewChat";
+import Settings from "./Settings"
+import History from "./History";
 
 const NavContent = ({ chatLog, setChatLog, setShowMenu }) => {
   return (
@@ -16,6 +18,8 @@ const NavContent = ({ chatLog, setChatLog, setShowMenu }) => {
         )}
       </div>
       <NavLinksContainer chatLog={chatLog} setChatLog={setChatLog} />
+      <History/>
+      <Settings/>
     </>
   );
 };

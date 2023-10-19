@@ -16,6 +16,21 @@ const Home = () => {
 
   const chatLogRef = useRef(null);
 
+  const setChatContent = () => {
+    setShowMenu(false)
+    console.log(showMenu)
+  }
+
+  useEffect(() => {
+    fetch("http://127.0.0.1:7861/get_sessions")
+      .then(res => {
+        return res.json();
+      })
+      .then(data => {
+        console.log(data);
+      })
+  })
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -32,17 +47,17 @@ const Home = () => {
 
       async function callAPI() {
         try {
-          const response = await fetch("http://127.0.0.1:5000/", {
+          const response = await fetch("http://127.0.0.1:7861/generate", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message: inputPrompt }),
+            body: JSON.stringify({ prompt: inputPrompt, parameters: {} }),
           });
           const data = await response.json();
           setChatLog([
             ...chatLog,
             {
               chatPrompt: inputPrompt,
-              botMessage: data.botResponse,
+              botMessage: data.generated_text,
             },
           ]);
           setErr(false);

@@ -52,12 +52,16 @@ nav {
   background-color: #212122;
   width: 100%;
   max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .navPromptWrapper {
   border-bottom: 1px solid #ffffff33;
   padding: 10px;
-  height: calc(100vh - 330px);
+  /* height: calc(100vh - 330px); */
+  /* height: 100%; */
   overflow-y: auto;
 }
 

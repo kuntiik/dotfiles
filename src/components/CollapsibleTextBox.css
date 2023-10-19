@@ -1,0 +1,67 @@
+.settingsContainer {
+  margin-bottom: 100px;
+  width: 100%
+}
+
+.promptBox {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+
+  padding-right: 50px;
+  padding-left: 30px
+}
+
+.prompt input{
+  height: 100px;
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.numberBox {
+  display: flex;
+  justify-content: space-around;
+}
+
+
+.numberBox input{
+  width: 100px;
+  height: 30px;
+}
+
+.textbox-container {
+  display: flex;
+  align-items: center;
+  border: 10px solid #ccc;
+  padding: 5px;
+  transition: all 0.3s;
+}
+
+.textbox {
+  flex: 1;
+  border: none;
+  outline: none;
+  transition: width 0.3s;
+}
+
+.collapsed {
+  width: 0;
+  padding: 0;
+  border: none;
+}
+
+.arrow-icon {
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.collapsed {
+  transform: rotate(180deg);
+}
