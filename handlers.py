@@ -19,6 +19,18 @@ def check_prompt_safety(prompt):
     except Exception as e:
         return False
 
+def sumarize_history(history, length=250):
+    openai.api_key = dotenv_values()['OPENAI_API_KEY']
+    prompt_summarize = "SENTENCES={\n" + history + "/n}/nSumarize the text in SENTENCES to make it shorter than " + str(length) + " words"
+
+    try:
+        chat = openai.ChatCompletion.create( 
+            model="gpt-3.5-turbo", messages=[{"role": "user", "content": prompt_summarize}]
+        ) 
+        return chat['choices'][0]['message']['content']
+    except Exception as e:
+        return ""
+
 def check_response_safety(response):
     openai.api_key = dotenv_values()['OPENAI_API_KEY']
     pattern = r'\b(?i)(yes\.|yes)\b'

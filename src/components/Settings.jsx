@@ -1,63 +1,21 @@
 import React, { useState } from 'react';
 import './CollapsibleTextBox.css'; // Import your CSS file
 
-function Settings() {
-  const [fields, setFields] = useState({
-    isCollapsed: true,
-    nonCollapsibleText: 100,
-    isChecked: true,
-  });
-
-  const [isCollapsed, setIsCollapsed] = useState(false);
-
-  const toggleCollapse = () => {
-    setIsCollapsed(!isCollapsed);
-  };
-
-  const handleToggleCollapse = () => {
-    setFields({ ...fields, isCollapsed: !fields.isCollapsed });
-  };
-
+function Settings({fields, setFields}) {
   const handleFieldChange = (fieldName, value) => {
     setFields({ ...fields, [fieldName]: value });
   };
 
   return (
     <div className="settingsContainer">
-      <h1>Settings</h1>
-      <div className="prompt">
-        <div className="promptBox">
-        <label>Prompt</label>
-        <button onClick={handleToggleCollapse}>
-          {fields.isCollapsed ? 'expand' : 'collapse'}
-        </button>
-        </div>
-        <br />
-        {fields.isCollapsed ? null : (
-          <input
-            type="text"
-            placeholder="### instruction:
-            use the following input and come up with a structured response in the style of ned flanders given the context.
-            ### context:
-            {input}
-
-            ### input:
-            {context}
-            
-            ### response:
-            "
-            value={fields.collapsibletext}
-            onChange={(e) => handleFieldChange('collapsibletext', e.target.value)}
-          />
-        )}
-      </div>
+      <h3>Settings</h3>
 
       <div className="numberBox">
         <h3>Temperature:</h3>
         <input
           type="text"
-          value={fields.noncollapsibletext}
-          onChange={(e) => handleFieldChange('noncollapsibletext', e.target.value)}
+          value={fields.temperature}
+          onChange={(e) => handleFieldChange('temperature', e.target.value)}
           placeholder="non-collapsible text"
         />
       </div>
@@ -65,39 +23,28 @@ function Settings() {
       <div className="numberBox">
         <h3>Max tokens</h3>
         <input
-          type="text"
-          value={fields.noncollapsibletext}
-          onChange={(e) => handleFieldChange('noncollapsibletext', e.target.value)}
+          value={fields.maxTokens}
+          onChange={(e) => handleFieldChange('maxTokens', e.target.value)}
           placeholder="non-collapsible text"
         />
       </div>
 
-      <div>
-        <label>checkbox</label>
+      <div className='checkBox'>
+        <h3>Input safety: </h3>
         <input
           type="checkbox"
-          checked={fields.isChecked}
-          onChange={() => handleFieldChange('ischecked', !fields.isChecked)}
+          checked={fields.inputSafety}
+          onChange={() => handleFieldChange('inputSafety', !fields.inputSafety)}
         />
       </div>
-      <div className="collapsible-textbox">
-      <label className="label">textbox</label>
-      <div className="textbox-container">
+      <div className='checkBox'>
+        <h3>Output safety: </h3>
         <input
-          type="text"
-          className={`textbox ${isCollapsed ? 'collapsed' : ''}`}
-          placeholder="type here..."
+          type="checkbox"
+          checked={fields.outputSafety}
+          onChange={() => handleFieldChange('outputSafety', !fields.outputSafety)}
         />
-        <i
-          className={`arrow-icon ${
-            isCollapsed ? 'collapsed' : 'expanded'
-          }`}
-          onClick={toggleCollapse}
-        >
-          &#8595; {/* down arrow */}
-        </i>
       </div>
-    </div>
     </div>
   );
 }

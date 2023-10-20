@@ -3,6 +3,28 @@
   width: 100%
 }
 
+.history {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.history button {
+  width: 80%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.checkBox {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+
+  padding-right: 50px;
+  padding-left: 30px
+}
+
 .promptBox {
   display: flex;
   justify-content: space-around;
@@ -28,6 +50,7 @@
 .numberBox {
   display: flex;
   justify-content: space-around;
+  align-items: center;
 }
 
 
@@ -49,19 +72,4 @@
   border: none;
   outline: none;
   transition: width 0.3s;
-}
-
-.collapsed {
-  width: 0;
-  padding: 0;
-  border: none;
-}
-
-.arrow-icon {
-  cursor: pointer;
-  transition: transform 0.3s;
-}
-
-.collapsed {
-  transform: rotate(180deg);
 }

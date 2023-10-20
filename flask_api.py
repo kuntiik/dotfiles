@@ -12,7 +12,7 @@ import re
 import sqlite3
 import json
 from handlers import check_prompt_safety, check_response_safety, DBHandler
-from handlers import data_to_history
+from handlers import data_to_history, sumarize_history
 
 
 openai.api_key = dotenv_values()['OPENAI_API_KEY']
@@ -59,23 +59,39 @@ CORS(app)
 @app.route("/get_session_history", methods= ['POST'])
 def get_session_history():
     data = request.get_json(force=True)
-    history = {1: [
-        {'user': 'user', 'content': "User message"},
-        {'user': 'bot', 'content': "A response from the bot"}
-        ]}
-    return {history: history.get(data['id'], [])}
+    print("get history data", data)
+    db = DBHandler()
+    history = db.fetch_id(data['id'])['data']
+    return {'history': history}
 
 @app.route("/get_sessions")
 def get_sessions():
     db = DBHandler()
-    return {"sessions": [{'id': id, 'name': name} for id, name in zip(*db.names_and_ids)]}
+    return {"sessions": [{'id': id, 'name': name[:20]} for name, id in zip(*db.names_and_ids)]}
 
 INPUT_SAFETY = False
+
+def get_model_input(prompt, history):
+    prompt = f"""### Instruction:
+    Use the following Input and come up with a structured response in the style of Ned Flanders given the context. Be concise!
+    ### Context:
+    {history}
+
+    ### Input:
+    {prompt}
+
+    ### Response:
+    """
+    return tokenizer(
+        prompt,
+        return_tensors="pt", 
+        truncation=True).input_ids.cuda(), prompt
 
 @app.route("/generate", methods = ['POST'])
 def generate():
     data = request.get_json(force=True)
     db = DBHandler()
+    print(f"Input data:  {data}")
     print(f"Database ids: {db.ids}")
     if db.contains_id(data['id']):
         conversation = db.fetch_id(data['id'])
@@ -85,31 +101,23 @@ def generate():
     
     print(f"Current history is {history}")
 
-    prompt = f"""### Instruction:
-    Use the following Input and come up with a structured response in the style of Ned Flanders given the context. Be concise!
-    ### Context:
-    {history}
-
-    ### Input:
-    {data['prompt']}
-
-    ### Response:
-    """
-    if INPUT_SAFETY and check_prompt_safety(data['prompt']):
+    if data['parameters'].get('inputSafety', False) and check_prompt_safety(data['prompt']):
+        print("checking for harmful prompt")
         return {"generated_text": "Your input is harmful, offensive or dangerous. This incident will be recorded!"}
+
+    input_ids, prompt = get_model_input(data['prompt'], history)
     
-    # Tokenize the input
-    input_ids = tokenizer(
-        prompt,
-        return_tensors="pt", 
-        truncation=True).input_ids.cuda()
+    if len(input_ids) > 1800:
+        history = sumarize_history(history)
+        input_ids, prompt = get_model_input(data['prompt'], history)
+
     
     generation_kwargs = dict(
         input_ids = input_ids,
-        max_new_tokens=data['parameters'].get('max_new_tokens', 100), 
+        max_new_tokens=int(data['parameters'].get('maxTokens', 100)), 
         do_sample=data['parameters'].get('do_sample', True),
         top_p=data['parameters'].get('top_p', 0.9),
-        temperature=data['parameters'].get('temperature', 0.7),
+        temperature=float(data['parameters'].get('temperature', 0.7)),
         use_cache=True
     )
 
@@ -117,6 +125,11 @@ def generate():
     
     # return {"generated_text" : tokenizer.batch_decode(outputs, skip_special_tokens=True)[0][len(data['prompt']):]}
     output_text = tokenizer.batch_decode(outputs.detach().cpu().numpy(), skip_special_tokens=True)[0][len(prompt):]
+
+    if data['parameters'].get('outputSafety', False) and check_response_safety(output_text):
+        print("checking for harmful output")
+        return {"generated_text": "I am sorry but I have produced text that can be offensive, dangerous or contains bias. For your own safety the output will not be provided."}
+
     db.update_by_id(data['id'], {'chatPrompt': data['prompt'], 'botMessage': output_text})
     print("database ids: ", db.ids)
     # history += f"QESTION={data['prompt']}\nANSWER={output_text}"

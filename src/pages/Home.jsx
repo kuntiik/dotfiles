@@ -15,6 +15,13 @@ const Home = () => {
   const [responseFromAPI, setReponseFromAPI] = useState(false);
   const [sessionId, setSessionID] = useState('');
   const [sessionList, setSessionList] = useState([]);
+  const [fields, setFields] = useState({
+    isCollapsed: true,
+    maxTokens: 100,
+    temperature: 0.7,
+    outputSafety: false,
+    inputSafety: false,
+  });
 
   useEffect(() => {
     // Create a new Date object to get the current date and time
@@ -37,9 +44,33 @@ const Home = () => {
   const chatLogRef = useRef(null);
 
   const setChatContent = (id) => {
-    console.log(showMenu)
-    setChatLog([{chatPrompt: "Dummy message"}, {chatPrompt: "foo", botMessage: "Dummy response"}])
+    console.log(id)
+    {setChatContentCall(id)}
   }
+
+  function setChatContentCall( id ) {
+    setSessionID(id);
+  
+    fetch("http://127.0.0.1:7861/get_session_history", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: id }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // Process the data and set the chat log
+        setChatLog(data.history);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }
+
 
   useEffect(() => {
     fetch("http://127.0.0.1:7861/get_sessions")
@@ -70,7 +101,7 @@ const Home = () => {
           const response = await fetch("http://127.0.0.1:7861/generate", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ prompt: inputPrompt, parameters: {}, id: sessionId }),
+            body: JSON.stringify({ prompt: inputPrompt, parameters: fields, id: sessionId }),
           });
           const data = await response.json();
           setChatLog([
@@ -134,6 +165,8 @@ const Home = () => {
               setShowMenu={setShowMenu}
               historyOnClickFunction={setChatContent}
               sessionList={sessionList}
+              fields={fields}
+              setFields={setFields}
             />
           </div>
           <div className="navCloseIcon">
@@ -160,6 +193,8 @@ const Home = () => {
           setShowMenu={setShowMenu}
           historyOnClickFunction={setChatContent}
           sessionList={sessionList}
+          fields={fields}
+          setFields={setFields}
         />
       </aside>
 
