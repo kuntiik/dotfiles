@@ -13,6 +13,26 @@ const Home = () => {
   const [chatLog, setChatLog] = useState([]);
   const [err, setErr] = useState(false);
   const [responseFromAPI, setReponseFromAPI] = useState(false);
+  const [sessionId, setSessionID] = useState('');
+  const [sessionList, setSessionList] = useState([]);
+
+  useEffect(() => {
+    // Create a new Date object to get the current date and time
+    const currentDate = new Date();
+
+    // Extract individual date and time components
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Month (0-11) is zero-based
+    const day = String(currentDate.getDate()).padStart(2, '0'); // Day of the month
+    const hour = String(currentDate.getHours()).padStart(2, '0');
+    const minute = String(currentDate.getMinutes()).padStart(2, '0');
+    const second = String(currentDate.getSeconds()).padStart(2, '0');
+
+    // Create the formatted date string
+    const formattedDateString = `${month}-${day}-${hour}-${minute}-${second}`;
+
+    // Update the state variable with the formatted date string
+    setSessionID(formattedDateString);
+  }, []);
 
   const chatLogRef = useRef(null);
 
@@ -27,9 +47,9 @@ const Home = () => {
         return res.json();
       })
       .then(data => {
-        console.log(data);
+        setSessionList(data.sessions)
       })
-  })
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -50,7 +70,7 @@ const Home = () => {
           const response = await fetch("http://127.0.0.1:7861/generate", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ prompt: inputPrompt, parameters: {} }),
+            body: JSON.stringify({ prompt: inputPrompt, parameters: {}, id: sessionId }),
           });
           const data = await response.json();
           setChatLog([
@@ -113,6 +133,7 @@ const Home = () => {
               setChatLog={setChatLog}
               setShowMenu={setShowMenu}
               historyOnClickFunction={setChatContent}
+              sessionList={sessionList}
             />
           </div>
           <div className="navCloseIcon">
@@ -137,6 +158,8 @@ const Home = () => {
           chatLog={chatLog}
           setChatLog={setChatLog}
           setShowMenu={setShowMenu}
+          historyOnClickFunction={setChatContent}
+          sessionList={sessionList}
         />
       </aside>
 
