@@ -98,15 +98,15 @@ def generate():
     else:
         history = ""
     
-    print(f"Current history is {history}")
 
     if data['parameters'].get('inputSafety', False) and check_prompt_safety(data['prompt']):
         print("checking for harmful prompt")
         return {"generated_text": "Your input is harmful, offensive or dangerous. This incident will be recorded!"}
 
     input_ids, prompt = get_model_input(data['prompt'], history)
+    print(f"Current length of history is {len(input_ids[0])} tokens")
     
-    if len(input_ids) > 1800:
+    if len(input_ids[0]) > 1800:
         history = sumarize_history(history)
         input_ids, prompt = get_model_input(data['prompt'], history)
         history_sumarized = True
