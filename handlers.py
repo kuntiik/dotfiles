@@ -27,7 +27,9 @@ def sumarize_history(history, length=250):
         chat = openai.ChatCompletion.create( 
             model="gpt-3.5-turbo", messages=[{"role": "user", "content": prompt_summarize}]
         ) 
-        return chat['choices'][0]['message']['content']
+        new_history = chat['choices'][0]['message']['content']
+        print(f"Size of history was reduced from {len(history.split(' '))} to {len(new_history.split(' '))}")
+        return new_history
     except Exception as e:
         return ""
 
@@ -90,10 +92,13 @@ class DBHandler:
         else:
             return 
     
-    def update_by_id(self, id, conversation):
+    def update_by_id(self, id, conversation, rewrite=False):
         data = self.fetch_id(id)
         if data:
-            data['data'].append(conversation)
+            if rewrite:
+                data['data'] = [conversation]
+            else:
+                data['data'].append(conversation)
             updated_data_str = json.dumps(data)
             self.cursor.execute(f'UPDATE {self.table} SET data = ? WHERE id = ?', (updated_data_str, id))
         else:

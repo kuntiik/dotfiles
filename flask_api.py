@@ -89,10 +89,9 @@ def get_model_input(prompt, history):
 
 @app.route("/generate", methods = ['POST'])
 def generate():
+    history_sumarized = False
     data = request.get_json(force=True)
     db = DBHandler()
-    print(f"Input data:  {data}")
-    print(f"Database ids: {db.ids}")
     if db.contains_id(data['id']):
         conversation = db.fetch_id(data['id'])
         history = data_to_history(conversation['data'])
@@ -110,6 +109,7 @@ def generate():
     if len(input_ids) > 1800:
         history = sumarize_history(history)
         input_ids, prompt = get_model_input(data['prompt'], history)
+        history_sumarized = True
 
     
     generation_kwargs = dict(
@@ -130,7 +130,8 @@ def generate():
         print("checking for harmful output")
         return {"generated_text": "I am sorry but I have produced text that can be offensive, dangerous or contains bias. For your own safety the output will not be provided."}
 
-    db.update_by_id(data['id'], {'chatPrompt': data['prompt'], 'botMessage': output_text})
+    chatPrompt = 'Summarization' if history_sumarized else data['prompt']
+    db.update_by_id(data['id'], {'chatPrompt': chatPrompt, 'botMessage': output_text}, history_sumarized)
     print("database ids: ", db.ids)
     # history += f"QESTION={data['prompt']}\nANSWER={output_text}"
     return {"generated_text" : output_text}
