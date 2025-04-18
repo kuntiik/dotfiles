@@ -6,16 +6,14 @@
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
-
-{{- if not .personal }}
 CONNECTED_NETWORK=$(eval "/Sy*/L*/Priv*/Apple8*/V*/C*/R*/airport -I | awk '/ SSID:/ {print \$2}'")
-WORK_NETWORK_NAME="Wireless1"
-if [ $CONNECTED_NETWORK = $WORK_NETWORK_NAME ]; then
-	echo "Starting MRK-proxy"
-	source ~/mrk-proxy/mrk-proxy
-	mrk-proxy-on
-fi
-{{- end}}
+
+#WORK_NETWORK_NAME="Wireless1"
+#if [ $CONNECTED_NETWORK = $WORK_NETWORK_NAME ]; then
+	#echo "Starting MRK-proxy"
+#	source ~/mrk-proxy/mrk-proxy
+#	mrk-proxy-on
+#fi
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -93,6 +91,7 @@ plugins=(git
 	zsh-autosuggestions
 	zsh-syntax-highlighting
 	macos
+	poetry
 	)
 
 source $ZSH/oh-my-zsh.sh
@@ -139,5 +138,49 @@ export NNN_FIFO="/tmp/nnn.fifo"
 export NNN_PLUG="p:preview-tui"
 #export ICONLOOKUP=1
 export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
+export PATH="/Users/kuntl/.local/bin:$PATH"
 
 alias n='nnn'
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+#__conda_setup="$('/opt/homebrew/Caskroom/miniconda/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+#if [ $? -eq 0 ]; then
+#    eval "$__conda_setup"
+#else
+#    if [ -f "/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh" ]; then
+#        . "/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh"
+#    else
+#        export PATH="/opt/homebrew/Caskroom/miniconda/base/bin:$PATH"
+#    fi
+#fi
+#unset __conda_setup
+# <<< conda initialize <<<
+
+
+export PATH="$HOME/.pyenv/bin:$PATH"
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+
+
+
+export PATH=$PATH:/Users/kuntl/.spicetify
+export PNPM_HOME="$HOME/.local/share/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		builtin cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
+}
+
+# Added by Amplify CLI binary installer
+export PATH="$HOME/.amplify/bin:$PATH"
+#export NODE_EXTRA_CA_CERTS="~/ca.pem"
+#export REQUESTS_CA_BUNDLE='~/ca.pem'
+#export SSL_CERT_FILE="~/ca.pem"
+#export GITHUB_SSL_CAINFO="~/ca.pem"
+#export CURL_CA_BUNDLE="~/ca.pem"
